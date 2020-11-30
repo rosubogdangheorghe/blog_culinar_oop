@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>Folosim metoda $.ajax() pentru a face un request de tip GET si afisam informatia</h2>
+    <p> <a target="_blank"
+            href="https://github.com/skolakoda/programming-quotes-api">https://github.com/skolakoda/programming-quotes-api</a>
+    </p>
+    <p> <a href = "https://official-joke-api.appspot.com/jokes/programming/random" taget="_blank">https://official-joke-api.appspot.com/jokes/programming/random</a></p>
+    <button id = "first">Get JSON data - citate</button>
+    <button id = "second" >Get JSON data - glume</button>
+
+    <input type="text" name = "artist" id = "artist" placeholder="Input artist name">
+    <input type = "text" name  = "title" id = "title" placeholder="Input title">
+
+    <button id = "third" >Get JSON data - versuri</button>
+    <div id = "1"></div>
+    <div id = "2"></div>
+    <div id = "3"></div>
+    <!-- <script src = "../jquery/jquery-3.5.1.min.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#first').click(function(){
+                $.ajax(
+                    "https://type.fit/api/quotes",
+                    {
+                        type:'GET',
+                        dataType:'json',
+                        success: function(result,status,xhr) {
+                            $('#1').append(result[0].text+ ' ' +result[0].author + '<br><br>');
+                        },
+                        error: function(jqXhr,textStatus,errorMessage){
+                            $('#1').append('Error' + errorMessage);
+                        }
+                    }
+                ); 
+            });
+
+            $('#second').click(function(){
+                $.ajax(
+                    "https://cors-anywhere.herokuapp.com/https://official-joke-api.appspot.com/jokes/programming/random",
+                    {
+                        type:'GET',
+                        dataType:'json',
+                        success: function(data,status,xhr) {
+                            $('#2').append(data[0].setup + ' '+ data[0].punchline +'<br><br>');
+                        },
+                        error: function(jqXhr,textStatus,errorMessage){
+                            $('#2').append('Error' + errorMessage );
+                        }
+                    }); 
+            });
+
+            $('#third').click(function(){
+                var artist = $('[name = "artist"]').val();
+                var title = $('[name = "title"]').val();
+              
+
+                $.ajax(
+                    "https://api.lyrics.ovh/v1/" + artist + "/"+ title,
+                    {
+                        type:'GET',
+                        dataType:'json',
+                        success: function(data,status,xhr) {
+                            $('#3').append(data.lyrics +'<br>');
+                        },
+                        error: function(jqXhr,textStatus,errorMessage){
+                            $('#3').append('Error' + errorMessage );
+                        }
+                    }); 
+            });
+
+        });
+   
+    </script>
+</body>
+
+</html>
+
+
+<!-- [
+    {
+    "id":379,
+    "type":"programming",
+    "setup":"A programmer puts two glasses on his bedside table before going to sleep.",
+    "punchline":"A full one, in case he gets thirsty, and an empty one, in case he doesn’t."
+    },
+    {
+    "id":379,
+    "type":"programming",
+    "setup":"A programmer puts two glasses on his bedside table before going to sleep.",
+    "punchline":"A full one, in case he gets thirsty, and an empty one, in case he doesn’t."
+    }] -->
